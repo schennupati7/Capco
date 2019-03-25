@@ -1,0 +1,13 @@
+<div fxFlex fxFlexFill style="overflow: hidden;">
+  <div fxLayout="column">
+    <div fxLayout="row" fxFlex>
+      <h1 class="text-center">Table with Infinite Scroll</h1>
+    </div>
+    <app-custom-table
+      [headers]="displayedColumns"
+      [data]="tableData"
+      [type]="'infinite-scroll'"
+      fxFlex="100">
+    </app-custom-table>
+  </div>
+</div>

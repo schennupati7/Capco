@@ -1,0 +1,58 @@
+<div id="custom-table">
+  <div fxFlex="100px" fxLayout="row" fxLayoutAlign="center center" class="error" *ngIf="!rows || rows.length === 0">
+    No Data Found.
+  </div>
+  <div class="table-wrapper" *ngIf="rows && rows.length > 0"
+       infinite-scroll
+       [infiniteScrollDistance]="1"
+       [infiniteScrollThrottle]="50"
+       (scrolled)="applyInfiniteScroll()"
+       [scrollWindow]="false">
+    <table>
+      <thead>
+      <tr>
+        <th *ngFor="let col of cols">{{col.name}}</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let row of filteredRows">
+        <ng-container *ngFor="let col of cols">
+          <td *ngIf="col.isVisible">{{row[col.key]}}</td>
+          <td *ngIf="!col.isVisible">
+            <button class="button" type="button" (click)="onRowClick(row)">Send</button>
+          </td>
+        </ng-container>
+
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div fxFlex="100px" fxLayout="row" fxLayoutAlign=" center">
+    <div fxFlex="30" fxLayout="row"></div>
+    <div fxFlex fxLayoutAlign="center center">
+      <div fxFlex="100" fxLayoutAlign="center center" [fxShow]="tableType === 'pagination'">
+        <button class="button m-lr-5" [disabled]="paginationOptions.currentPage === 1" (click)="setPage(1)">First
+        </button>
+        <button class="button m-lr-5" [disabled]="paginationOptions.currentPage === 1"
+                (click)="setPage(paginationOptions.currentPage-1)">Previous
+        </button>
+        <span class="m-lr-5">Records: {{paginationOptions.startRecord+1}} - {{paginationOptions.endRecord}} of {{paginationOptions.totalRecords}}
+      </span>
+        <button class="button m-lr-5" [disabled]="paginationOptions.currentPage === paginationOptions.lastPage"
+                (click)="setPage(paginationOptions.currentPage+1)">Next
+        </button>
+        <button class="button m-lr-5" [disabled]="paginationOptions.currentPage === paginationOptions.lastPage"
+                (click)="setPage(paginationOptions.lastPage)">Last
+        </button>
+      </div>
+    </div>
+    <div fxFlex="30" fxLayoutAlign="end">
+      <b>Number of Records: &nbsp;</b>
+      <select [(ngModel)]="paginationOptions.numberOfRecordsPerPage" (change)="onPageSizeChange()">
+        <option class='option' *ngFor='let option of pageSizeOptions' [value]="option"
+                [selected]="paginationOptions.numberOfRecordsPerPage === option">{{option}}
+        </option>
+      </select>
+    </div>
+  </div>
+</div>
